@@ -1,36 +1,35 @@
 package operadora;
 
+
 public class Cliente extends Object implements Cloneable {
   private String nomeCliente;
   private String documento;
   private String endereco;
-
+  
+  
   public Cliente(String nomeCliente, String documento, String endereco, String fone){
     this.nomeCliente = nomeCliente;
     this.documento = documento;
     this.endereco = endereco;
   }
 
-  public Cliente retornaClone() {
-    try {
+  public Cliente retornaClone() throws CloneNotSupportedException {
       return (Cliente)this.clone();
-    }
-    catch(CloneNotSupportedException exception) {
-      exception.printStackTrace();
-      return null;
-    }
   }
 
   public String getNomeCliente(){
-    return nomeCliente.retornaClone();
+	  String copia = this.nomeCliente;
+	  return copia;
   }
 
   public String getdocumento(){
-    return documento.retornaClone();
+	  String copia = this.documento;
+	  return copia;
   }
 
   public String getEndereco(){
-    return endereco.retornaClone();
+	  String copia = this.endereco;
+	  return copia;
   }
 
   public void setNomeCliente(String nomeCliente){

@@ -4,8 +4,19 @@ public class Plano {
   private String nomePlano;
   private double valorMin;
 
-  public Plano(Sring nome, double valor) {
+  public Plano(String nome, double valor) {
     this.nomePlano = nome;
     this.valorMin = valor;
   }
+  
+  public String getNome() {
+	  String s = this.nomePlano;
+	  return s;
+  }
+  
+  public double getValorMin() {
+	  double copia = new Double(this.valorMin);
+	  return copia;
+  }
+  
 }

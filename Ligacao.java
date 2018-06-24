@@ -11,22 +11,17 @@ public class Ligacao extends Object implements Cloneable {
     this.duracao = duracao;
   }
 
-  public Ligacao retornaClone() {
-    try {
+  public Ligacao retornaClone() throws CloneNotSupportedException {
       return (Ligacao)this.clone();
-    }
-    catch(CloneNotSupportedException exception) {
-      exception.printStackTrace();
-      return null;
-    }
   }
 
   public GregorianCalendar getDataLig() {
-    return dataLig.retornaClone();
+    return (GregorianCalendar) dataLig.clone();
   }
 
   public double getDuracao() {
-    return duracao.retornaClone();
+	double dur = new Double(duracao);
+    return dur;
   }
 
   public void setDataLig(GregorianCalendar data) {
