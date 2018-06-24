@@ -19,4 +19,7 @@ public class Plano {
 	  return copia;
   }
   
+  public Plano retornaClone() throws CloneNotSupportedException {
+	  return (Plano) this.clone();
+  }
 }
