@@ -35,6 +35,12 @@ public class CelularAss extends Celular{
 	    }
 	    return listaRetorno;
 	}
+
+	@Override
+	public double getCreditos() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	
