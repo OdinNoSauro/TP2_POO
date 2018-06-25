@@ -12,7 +12,7 @@ public abstract class Celular extends Object implements Cloneable  {
 	protected static double proxNum = 90000000;
 	
 	public abstract Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws Exception;
-	public abstract double getCreditos();
+	public abstract double getCreditos() throws Exception;
 	
 	public Celular getCelular() throws CloneNotSupportedException {
 		return (Celular) this.clone();

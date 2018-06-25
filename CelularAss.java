@@ -37,9 +37,8 @@ public class CelularAss extends Celular{
 	}
 
 	@Override
-	public double getCreditos() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getCreditos() throws CelularInvalidoException {
+		throw new CelularInvalidoException("Celular é do tipo assinatura");
 	}
 	
 	

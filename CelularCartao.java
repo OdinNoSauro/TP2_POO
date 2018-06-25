@@ -18,13 +18,13 @@ public class CelularCartao extends Celular{
 	}
 
 	@Override
-	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws Exception {
+	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws LigacaoInvalidaException {
 		double custo = this.plano.getValorMin()*duracao;
 		if (this.creditos<custo)
-			throw new Exception("Crédito insufuciente");
+			throw new LigacaoInvalidaException("Crédito insufuciente");
 		GregorianCalendar hoje = new GregorianCalendar();
 		if(this.validade.compareTo(hoje)<0)
-			throw new Exception("Créditos vencidos");
+			throw new LigacaoInvalidaException("Créditos vencidos");
 		Ligacao nova = new Ligacao(data, duracao);
 		return nova;
 		// TODO Auto-generated method stub
