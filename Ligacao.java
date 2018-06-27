@@ -20,7 +20,7 @@ public class Ligacao extends Object implements Cloneable {
   }
 
   public double getDuracao() {
-	double dur = new Double(duracao);
+    double dur = new Double(duracao);
     return dur;
   }
 

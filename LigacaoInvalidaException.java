@@ -1,19 +1,19 @@
 package operadora;
 
 public class LigacaoInvalidaException extends Exception{
-	public LigacaoInvalidaException () {
+	public LigacaoInvalidaException() {
 
-    }
+  }
 
-    public LigacaoInvalidaException (String menssagem) {
-        super (menssagem);
-    }
+  public LigacaoInvalidaException(String mensagem) {
+      super (mensagem);
+  }
 
-    public LigacaoInvalidaException (Throwable causa) {
-        super (causa);
-    }
+  public LigacaoInvalidaException(Throwable causa) {
+      super (causa);
+  }
 
-    public LigacaoInvalidaException (String menssagem, Throwable causa) {
-        super (menssagem, causa);
-    }
+  public LigacaoInvalidaException(String mensagem, Throwable causa) {
+      super (mensagem, causa);
+  }
 }
