@@ -6,14 +6,14 @@ public class CelularInvalidoException extends Exception{
   }
 
   public CelularInvalidoException(String mensagem) {
-      super (mensagem);
+    super(mensagem);
   }
 
   public CelularInvalidoException(Throwable causa) {
-      super (causa);
+    super(causa);
   }
 
   public CelularInvalidoException(String mensagem, Throwable causa) {
-      super (mensagem, causa);
+    super(mensagem, causa);
   }
 }

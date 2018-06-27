@@ -41,15 +41,13 @@ public abstract class Celular extends Object implements Cloneable {
 		this.plano = novo;
 	}
 
-	public ArrayList<Ligacao> getLigacoes() {
-		GregorianCalendar atual = new GregorianCalendar();
-	    ArrayList<Ligacao> listaRetorno = new ArrayList<Ligacao>();
-	    for (int i = 0; i < this.ligacoes.size(); i++) {
-	      GregorianCalendar referencia = this.ligacoes.get(i).getDataLig();
-	      if ((referencia.get(Calendar.MONTH) == atual.get(Calendar.MONTH)) && (referencia.get(Calendar.YEAR) == atual.get(Calendar.YEAR))) {
-	        listaRetorno.add(this.ligacoes.get(i));
-	      }
-	    }
-	    return listaRetorno;
+	public ArrayList<Ligacao> getLigacoes(GregorianCalendar inicio) {
+    ArrayList<Ligacao> listaRetorno = new ArrayList<Ligacao>();
+    for (int i = 0; i < this.ligacoes.size(); i++) {
+      if ((inicio.compareTo(this.ligacoes.get(i).getDataLig())) < 0) {
+        listaRetorno.add(this.ligacoes.get(i));
+      }
+    }
+    return listaRetorno;
 	}
 }

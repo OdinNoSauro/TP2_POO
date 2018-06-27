@@ -12,7 +12,7 @@ public class Ligacao extends Object implements Cloneable {
   }
 
   public Ligacao retornaClone() throws CloneNotSupportedException {
-      return (Ligacao)this.clone();
+    return (Ligacao)this.clone();
   }
 
   public GregorianCalendar getDataLig() {

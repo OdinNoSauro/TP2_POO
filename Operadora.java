@@ -3,7 +3,6 @@ package operadora;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-
 public class Operadora extends Object implements Cloneable{
   private ArrayList<Cliente> clientes;
   private ArrayList<Plano> planos;
@@ -27,7 +26,7 @@ public class Operadora extends Object implements Cloneable{
     this.planos.push(novo);
   }
 
-  public int findCliente(String nomeCliente) {
+  public int findCliente(String nomeCliente) throws NotInListException {
     for (int i = 0; i < this.clientes.size(); i++){
       if (this.clientes.get(i).getNomeCliente() == nomeCliente) {
         return i;
@@ -36,13 +35,12 @@ public class Operadora extends Object implements Cloneable{
     return -1;
   }
 
-  public int findCelular(String numeroFone) {
+  public int findCelular(String numeroFone) throws NotInListException {
     for (int i = 0; i < this.celulares.size(); i++){
       if (this.celulares.get(i).getNumero() == numeroFone) {
         return i;
       }
     }
-    return -1;
   }
 
   public void addCelular(String nomeCliente) {
@@ -51,11 +49,11 @@ public class Operadora extends Object implements Cloneable{
     this.celulares.push(novo);
   }
 
-  public int deleteCelular() {
+  public int deleteCelular() throws {
 	  return 1;
   }
 
-  public void addCreditos(String numero, double valor) {
+  public void addCreditos(String numero, double valor) throws {
 	  int indiceCelular = findCelular(numero);
     this.celulares.get(indiceCelular).addCreditos(valor);
   }
@@ -65,23 +63,43 @@ public class Operadora extends Object implements Cloneable{
     this.celulares.get(indiceCelular).realizarLigacao(data, duracao);
   }
 
-  public ArrayList<Ligacao> showConta() {
-    return null;
+  public ArrayList<Ligacao> extratoLigacao(String numero, GregorianCalendar inicio) {
+    int indiceCelular = findCelular(numero);
+    return this.celulares.get(indiceCelular).getLigacoes(inicio).clone();
+  }
+
+  public double valorConta(String numero) {
+    int indiceCelular = findCelular(numero);
+    return this.celulares.get(indiceCelular).getConta();
+  }
+
+  public GregorianCalendar getVencimento(String numero) {
+    int indiceCelular = findCelular(numero);
+    GregorianCalendar vencimento = new GregorianCalendar();
+    vencimento.set(DAY_OF_MONTH, this.celulares.get(indiceCelular).getVencimento);
+    return vencimento.clone();
+  }
+
+  public double getCreditos(String numero) {
+    int indiceCelular = findCelular(numero);
+    return this.celulares.get(indiceCelular).getCreditos();
+  }
+
+  public GregorianCalendar getValidade(String numero) {
+    int indiceCelular = findCelular(numero);
+    return this.celulares.get(indiceCelular).getValidade().clone();
   }
 
   public ArrayList<Cliente> getClientes() {
-    ArrayList<Cliente> copia = this.clientes;
-    return copia;
+    return this.clientes.clone();
   }
 
   public ArrayList<Celular> getCelulares() {
-    ArrayList<Celular> copia = this.celulares;
-    return copia;
+    return this.celulares.clone();
   }
 
   public ArrayList<Plano> getPlanos() {
-    ArrayList<Plano> copia = this.planos;
-    return copia;
+    return this.planos.clone();
   }
 
 }
