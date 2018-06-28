@@ -1,6 +1,6 @@
 package operadora;
 
-public class Plano {
+public class Plano extends Object implements Cloneable{
   private String nomePlano;
   private double valorMin;
 

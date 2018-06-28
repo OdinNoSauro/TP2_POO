@@ -1,5 +1,6 @@
 package operadora;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,10 +10,16 @@ public abstract class Celular extends Object implements Cloneable {
 	protected Cliente cliente;
 	protected ArrayList<Ligacao> ligacoes;
 	protected String numero;
-	protected static double proxNum = 90000000;
+	protected static int proxNum = 900000000;
 
-	public abstract Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws Exception;
-	public abstract double getCreditos() throws Exception;
+	public abstract Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws CelularInvalidoException, LigacaoInvalidaException;
+	public abstract double getCreditos() throws CelularInvalidoException;
+	public abstract void addCreditos(double valor) throws CelularInvalidoException;
+	public abstract double getConta() throws CelularInvalidoException;
+	public abstract int getVencimento() throws CelularInvalidoException;
+	public abstract double deletavel();
+	public abstract GregorianCalendar getValidade() throws CelularInvalidoException;
+	public abstract char getTipo();
 
 	public Celular getCelular() throws CloneNotSupportedException {
 		return (Celular) this.clone();
@@ -32,8 +39,8 @@ public abstract class Celular extends Object implements Cloneable {
 		return s;
 	}
 
-	public double getProxNumero() {
-		return new Double(this.proxNum);
+	public BigDecimal getProxNumero() {
+		return new BigDecimal(this.proxNum);
 	}
 
 	public void setPlano(Plano novo) {
@@ -50,4 +57,10 @@ public abstract class Celular extends Object implements Cloneable {
     }
     return listaRetorno;
 	}
+	
+	public ArrayList<Ligacao> getLigacoes(){
+		return (ArrayList<Ligacao>) this.ligacoes.clone();
+	}
+	
+	
 }

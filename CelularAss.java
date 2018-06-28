@@ -1,39 +1,45 @@
 package operadora;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CelularAss extends Celular {
 	private int vencimento;
 
-	public CelularAss(Plano plan, Cliente client, GregorianCalendar venc) {
+	public CelularAss(Plano plan, Cliente client, int venc) {
 		this.vencimento = venc;
 		this.plano = plan;
 		this.cliente = client;
-		this.numero = new Double(this.proxNum).toString();
+		this.numero = new BigDecimal(this.proxNum).toString();
+		this.ligacoes = new ArrayList<Ligacao>();
 		this.proxNum++;
 	}
 
 	@Override
 	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) {
-		Ligacao nova = new Ligacao(data, duracao);
+		Ligacao nova = new Ligacao(data, duracao,duracao*this.plano.getValorMin());
+		ligacoes.add(nova);
 		return nova;
 	}
 
 	public int getVencimento() {
-		return new Int(this.vencimento);
+		return new Integer(this.vencimento);
 	}
 
 	public double getConta() {
 		GregorianCalendar vencimentoAtual = new GregorianCalendar();
-		vencimentoAtual.set(DAY_OF_MONTH, this.vencimento);
-		GregorianCalendar vencimentoPassado = vencimentoAtual.clone();
-		vencimentoPassado.add(DAY_OF_MONTH, -1);
+		if (vencimentoAtual.get(Calendar.DAY_OF_MONTH)>this.vencimento) {
+			vencimentoAtual.add(Calendar.MONTH, 1);
+		}
+		vencimentoAtual.set(Calendar.DAY_OF_MONTH, this.vencimento);
+		GregorianCalendar vencimentoPassado = (GregorianCalendar) vencimentoAtual.clone();
+		vencimentoPassado.add(Calendar.MONTH, -1);
 		double valor = 0;
-		ArrayList<Ligacao> listaRetorno = new ArrayList<Ligacao>();
-    for (int i = 0; i < this.ligacoes.size(); i++) {
+	for (int i = 0; i < this.ligacoes.size(); i++) {
       if (((vencimentoPassado.compareTo(this.ligacoes.get(i).getDataLig())) < 0) && ((vencimentoAtual.compareTo(this.ligacoes.get(i).getDataLig())) > 0)) {
-        valor += this.ligacoes.get(i).getDuracao()*this.plano.getValorMin();
+        valor += this.ligacoes.get(i).getValorTotal();
       }
     }
     return valor;
@@ -43,4 +49,27 @@ public class CelularAss extends Celular {
 	public double getCreditos() throws CelularInvalidoException {
 		throw new CelularInvalidoException("Celular é do tipo assinatura");
 	}
+
+	@Override
+	public void addCreditos(double valor) throws CelularInvalidoException {
+		throw new CelularInvalidoException("Celular é do tipo assinatura");		
+	}
+
+	@Override
+	public GregorianCalendar getValidade() throws CelularInvalidoException {
+		throw new CelularInvalidoException("Celular é do tipo assinatura");
+	}
+
+	@Override
+	public double deletavel() {
+		// TODO Auto-generated method stub
+		return getConta();
+	}
+
+	@Override
+	public char getTipo() {
+		// TODO Auto-generated method stub
+		return 'A';
+	}
+	
 }

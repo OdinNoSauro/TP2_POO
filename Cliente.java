@@ -1,11 +1,12 @@
 package operadora;
 
+import java.util.ArrayList;
 
 public class Cliente extends Object implements Cloneable {
   private String nomeCliente;
   private String documento;
   private String endereco;
-  private ArrayList<Celular> celulares = new ArrayList<Celular>;
+  private ArrayList<Celular> celulares = new ArrayList<Celular>();
 
   public Cliente(String nomeCliente, String documento, String endereco) {
     this.nomeCliente = nomeCliente;
@@ -33,7 +34,7 @@ public class Cliente extends Object implements Cloneable {
   }
 
   public ArrayList<Celular> getCelulares() {
-    ArrayList<Celular> copia = this.celulares;
+    ArrayList<Celular> copia = new ArrayList<Celular>(this.celulares);
     return copia;
   }
 
@@ -49,7 +50,18 @@ public class Cliente extends Object implements Cloneable {
     this.endereco = endereco;
   }
 
-  public Celular newCelular() {
-    return Celular;
+  public Celular newCelular(char tipo, Plano plano, int vencimento) throws CelularInvalidoException {
+    if (tipo == 'C' || tipo == 'c') {
+    	Celular novo = new CelularCartao(this,plano);
+    	this.celulares.add(novo);
+    	return novo;
+    }
+    else if(tipo == 'A' || tipo == 'a') {
+    	Celular novo = new CelularAss(plano,this,vencimento);
+    	this.celulares.add(novo);
+    	return novo;
+    }
+    throw new CelularInvalidoException("Tipo invalido");
+    
   }
 }
