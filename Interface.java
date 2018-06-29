@@ -18,6 +18,15 @@ public class Interface {
 		Locale.setDefault(new Locale("pt","BR"));
 		Scanner scanner = new Scanner(System.in);
 		double valor;
+
+		// Iniício
+		notificaUsuario(); // Último método da classe, só copiei um seu e mudei onde precisava
+		System.out.println("\n Pressione a tecla 'Enter' para continuar");
+		scanner.nextLine();
+		Runtime.exec("clear"); // Linux
+		Runtime.exec("cls"); // Windows
+		// Fim (apaga esses comentários depois de conferir)
+
 		do {
 			System.out.println("===================Selecione um opção=================");
 		  System.out.println(" (1) Adicionar créditos           	   (2) Registrar ligação");
@@ -306,6 +315,39 @@ public class Interface {
 		try {
 			Interface.op.addCreditos(numero, valor);
 		} catch (NotInListException | CelularInvalidoException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void notificaUsuario() {
+		try {
+			DecimalFormat df = new DecimalFormat();
+			df.applyPattern("R$ #,##0.00");
+			System.out.println("Lista de celulares: ");
+			ArrayList<Celular> lista = Interface.op.checkValidadeVencimento();
+			for(int i = 0; i < lista.size(); i++) {
+				System.out.println("Número: " + lista.get(i).getNumero());
+				System.out.print("\n");
+				Cliente c;
+				c = lista.get(i).getCliente();
+				System.out.println("Nome do Cliente: " + c.getNomeCliente());
+				System.out.println("Documento: " + c.getdocumento());
+				System.out.println("Endereço: " + c.getEndereco());
+				System.out.print("\n");
+				Plano p = lista.get(i).getPlano();
+				System.out.println("Nome do Plano: " + p.getNome());
+				System.out.println("Valor por minuto: " + df.format(p.getValorMin()));
+				System.out.print("\n");
+				imprimeLig(lista.get(i).getLigacoes());
+				if(lista.get(i).getTipo() == 'C') {
+					System.out.println("Créditos: " + df.format(lista.get(i).getCreditos()));
+					GregorianCalendar validade = lista.get(i).getValidade();
+					System.out.println("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + validade.get(Calendar.MONTH) + "/" + validade.get(Calendar.YEAR));
+				}else {
+					System.out.println("Vencimento: " + lista.get(i).getVencimento());
+				}
+			}
+		} catch (CloneNotSupportedException | CelularInvalidoException e) {
 			e.printStackTrace();
 		}
 	}
