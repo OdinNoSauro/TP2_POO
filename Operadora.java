@@ -3,7 +3,6 @@ package operadora;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.File;
 
-public class Operadora extends Object implements Cloneable{
+public class Operadora extends Object implements Cloneable {
   private ArrayList<Cliente> clientes;
   private ArrayList<Plano> planos;
   private ArrayList<Celular> celulares;
@@ -68,7 +67,7 @@ public class Operadora extends Object implements Cloneable{
     this.celulares.add(novo);
   }
 
-  public int deleteCelular(String numero) throws NotInListException, CelularInvalidoException{
+  public int deleteCelular(String numero) throws NotInListException, CelularInvalidoException {
 	  int indice = findCelular(numero);
 	  if(this.celulares.get(indice).deletavel() == 0) {
 		  this.celulares.remove(indice);
@@ -136,123 +135,63 @@ public class Operadora extends Object implements Cloneable{
       if(this.celulares.get(i).getPlano() == 'A') {
         vencimento.set(Calendar.DAY_OF_MONTH, this.celulares.get(i).getVencimento());
         if(vencimento.equals(atual)) {
-          listaRetorno.push(this.celulares.get(i));
+          listaRetorno.add(this.celulares.get(i));
         }
       }
       else if(this.celulares.get(i).getPlano() == 'C') {
         if(this.celulares.get(i).getValidade().equals(atual)) {
-          listaRetorno.push(this.celulares.get(i));
+          listaRetorno.add(this.celulares.get(i));
         }
       }
     }
     return listaRetorno.clone();
   }
 
-  public void gravarClientes() throws CloneNotSupportedException{
-  	try {
-    	FileOutputStream out = new FileOutputStream("Clientes.txt");
-    	ObjectOutputStream objOut = new ObjectOutputStream(out);
-    	objOut.writeObject(this.clientes);
-    	objOut.close();
-  	}
-    catch (FileNotFoundException e){
-  		e.printStackTrace();
-  	}
-    catch(IOException e) {
-  		e.printStackTrace();
-  	}
+  public void gravarClientes() throws CloneNotSupportedException, FileNotFoundException, IOException {
+  	FileOutputStream out = new FileOutputStream("Clientes.txt");
+  	ObjectOutputStream objOut = new ObjectOutputStream(out);
+  	objOut.writeObject(this.clientes);
+  	objOut.close();
   }
 
-  public void gravarCelulares() throws CloneNotSupportedException{
-    try {
-      FileOutputStream out = new FileOutputStream("Celulares.txt");
-      ObjectOutputStream objOut = new ObjectOutputStream(out);
-      objOut.writeObject(this.celulares);
-      objOut.close();
-    }
-    catch (FileNotFoundException e){
-      e.printStackTrace();
-    }
-    catch(IOException e) {
-      e.printStackTrace();
-    }
+  public void gravarCelulares() throws CloneNotSupportedException, FileNotFoundException, IOException {
+    FileOutputStream out = new FileOutputStream("Celulares.txt");
+    ObjectOutputStream objOut = new ObjectOutputStream(out);
+    objOut.writeObject(this.celulares);
+    objOut.close();
   }
 
-  public void gravarPlanos() throws CloneNotSupportedException{
-    try {
-      FileOutputStream out = new FileOutputStream("Planos.txt");
-      ObjectOutputStream objOut = new ObjectOutputStream(out);
-      objOut.writeObject(this.planos);
-      objOut.close();
-    }
-    catch (FileNotFoundException e){
-      e.printStackTrace();
-    }
-    catch(IOException e) {
-      e.printStackTrace();
-    }
+  public void gravarPlanos() throws CloneNotSupportedException, FileNotFoundException, IOException {
+    FileOutputStream out = new FileOutputStream("Planos.txt");
+    ObjectOutputStream objOut = new ObjectOutputStream(out);
+    objOut.writeObject(this.planos);
+    objOut.close();
   }
 
-  public void lerClientes() throws IOException {
+  public void lerClientes() throws IOException, FileNotFoundException, ClassNotFoundException {
   	if(new File("Clientes.txt").canRead() == true) {
-  		try {
-  			FileInputStream inC = new FileInputStream("Clientes.txt");
-  			ObjectInputStream objInc = new ObjectInputStream(inC);
-  			this.clientes = (ArrayList<Cliente>) objInc.readObject();
-  			objInc.close();
-  			this.clientes.get(0).incrementaConta(this.clientes.size());
-  		}
-      catch (FileNotFoundException e){
-    		e.printStackTrace();
-    	}
-      catch(ClassNotFoundException e) {
-    		e.printStackTrace();
-	    }
-      catch(IOException e) {
-    		e.printStackTrace();
-    	}
+			FileInputStream inC = new FileInputStream("Clientes.txt");
+			ObjectInputStream objInc = new ObjectInputStream(inC);
+			this.clientes = (ArrayList<Cliente>) objInc.readObject();
+			objInc.close();
   	}
   }
 
-  public void lerCelulares() throws IOException {
+  public void lerCelulares() throws IOException, FileNotFoundException, ClassNotFoundException {
     if(new File("Celulares.txt").canRead() == true) {
-      try {
-        FileInputStream inC = new FileInputStream("Celulares.txt");
-        ObjectInputStream objInc = new ObjectInputStream(inC);
-        this.celulares = (ArrayList<Cliente>) objInc.readObject();
-        objInc.close();
-        this.celulares.get(0).incrementaConta(this.celulares.size());
-      }
-      catch (FileNotFoundException e){
-        e.printStackTrace();
-      }
-      catch(ClassNotFoundException e) {
-        e.printStackTrace();
-      }
-      catch(IOException e) {
-        e.printStackTrace();
-      }
+      FileInputStream inC = new FileInputStream("Celulares.txt");
+      ObjectInputStream objInc = new ObjectInputStream(inC);
+      this.celulares = (ArrayList<Cliente>) objInc.readObject();
+      objInc.close();
     }
   }
 
-  public void lerPlanos() throws IOException {
+  public void lerPlanos() throws IOException, FileNotFoundException, ClassNotFoundException {
     if(new File("Planos.txt").canRead() == true) {
-      try {
-        FileInputStream inC = new FileInputStream("Planos.txt");
-        ObjectInputStream objInc = new ObjectInputStream(inC);
-        this.planos = (ArrayList<Cliente>) objInc.readObject();
-        objInc.close();
-        this.planos.get(0).incrementaConta(this.planos.size());
-      }
-      catch (FileNotFoundException e){
-        e.printStackTrace();
-      }
-      catch(ClassNotFoundException e) {
-        e.printStackTrace();
-      }
-      catch(IOException e) {
-        e.printStackTrace();
-      }
+      FileInputStream inC = new FileInputStream("Planos.txt");
+      ObjectInputStream objInc = new ObjectInputStream(inC);
+      this.planos = (ArrayList<Cliente>) objInc.readObject();
+      objInc.close();
     }
   }
 }

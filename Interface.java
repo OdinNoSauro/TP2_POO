@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Interface {
 
@@ -20,6 +22,9 @@ public class Interface {
 		double valor;
 
 		// Iniício
+		// Ler dados do arquivo
+		lerDados();
+		// Notificar o usuário
 		notificaUsuario(); // Último método da classe, só copiei um seu e mudei onde precisava
 		System.out.println("\n Pressione a tecla 'Enter' para continuar");
 		scanner.nextLine();
@@ -85,6 +90,8 @@ public class Interface {
 		System.out.println("Deseja realizar outra operação?");
 		continuar = scanner.nextLine().charAt(0);
 		} while((continuar == 'S') || (continuar == 's'));
+		// Gravar dados no arquivo
+		gravarDados();
 		System.out.println("Obrigado. Volte sempre!");
 		scanner.close();
 	}
@@ -348,6 +355,28 @@ public class Interface {
 				}
 			}
 		} catch (CloneNotSupportedException | CelularInvalidoException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void lerDados() {
+		try {
+			op.gravarClientes();
+			op.gravarPlanos();
+			op.gravarCelulares();
+		}
+		catch(CloneNotSupportedException | FileNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void gravarDados() {
+		try {
+			op.lerClientes();
+			op.lerPlanos();
+			op.lerCelulares();
+		}
+		catch(IOException | FileNotFoundException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
