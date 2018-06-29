@@ -52,7 +52,7 @@ public class CelularAss extends Celular {
 
 	@Override
 	public void addCreditos(double valor) throws CelularInvalidoException {
-		throw new CelularInvalidoException("Celular é do tipo assinatura");		
+		throw new CelularInvalidoException("Celular é do tipo assinatura");
 	}
 
 	@Override
@@ -62,14 +62,11 @@ public class CelularAss extends Celular {
 
 	@Override
 	public double deletavel() {
-		// TODO Auto-generated method stub
 		return getConta();
 	}
 
 	@Override
 	public char getTipo() {
-		// TODO Auto-generated method stub
 		return 'A';
 	}
-	
 }

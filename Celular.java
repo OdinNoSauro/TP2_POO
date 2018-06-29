@@ -34,7 +34,6 @@ public abstract class Celular extends Object implements Cloneable {
 	}
 
 	public String getNumero() {
-		// TODO Auto-generated method stub
 		String s = this.numero;
 		return s;
 	}
@@ -44,7 +43,6 @@ public abstract class Celular extends Object implements Cloneable {
 	}
 
 	public void setPlano(Plano novo) {
-		// TODO Auto-generated method stub
 		this.plano = novo;
 	}
 
@@ -57,10 +55,8 @@ public abstract class Celular extends Object implements Cloneable {
     }
     return listaRetorno;
 	}
-	
+
 	public ArrayList<Ligacao> getLigacoes(){
 		return (ArrayList<Ligacao>) this.ligacoes.clone();
 	}
-	
-	
 }

@@ -44,19 +44,19 @@ public class Operadora extends Object implements Cloneable{
     }
     throw new NotInListException("Celular não existe");
   }
-  
+
   public int findPlano(String nomePlano) throws NotInListException {
-	    for (int i = 0; i < this.planos.size(); i++){
-	      if (this.planos.get(i).getNome().equals(nomePlano)) {
-	        return i;
-	      }
-	    }
-	    throw new NotInListException("Plano não existe");
-	  }
+    for (int i = 0; i < this.planos.size(); i++){
+      if (this.planos.get(i).getNome().equals(nomePlano)) {
+        return i;
+      }
+    }
+    throw new NotInListException("Plano não existe");
+  }
 
   public void addCelular(String nomeCliente, char tipo, Plano plano, int vencimento) throws CelularInvalidoException, NotInListException {
     int indiceCliente = findCliente(nomeCliente);
-	Celular novo = this.clientes.get(indiceCliente).newCelular(tipo,plano, vencimento);
+    Celular novo = this.clientes.get(indiceCliente).newCelular(tipo,plano, vencimento);
     this.celulares.add(novo);
   }
 
@@ -66,8 +66,9 @@ public class Operadora extends Object implements Cloneable{
 		  this.celulares.remove(indice);
 		  return 1;
 	  }
-	  else 
+	  else {
 		  return 0;
+    }
   }
 
   public void addCreditos(String numero, double valor) throws NotInListException, CelularInvalidoException {
@@ -118,5 +119,4 @@ public class Operadora extends Object implements Cloneable{
   public ArrayList<Plano> getPlanos() {
     return (ArrayList<Plano>) this.planos.clone();
   }
-
 }

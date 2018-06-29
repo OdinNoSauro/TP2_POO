@@ -15,7 +15,7 @@ public class Cliente extends Object implements Cloneable {
   }
 
   public Cliente retornaClone() throws CloneNotSupportedException {
-      return (Cliente)this.clone();
+    return (Cliente)this.clone();
   }
 
   public String getNomeCliente() {
@@ -62,6 +62,5 @@ public class Cliente extends Object implements Cloneable {
     	return novo;
     }
     throw new CelularInvalidoException("Tipo invalido");
-    
   }
 }

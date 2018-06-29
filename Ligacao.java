@@ -25,10 +25,11 @@ public class Ligacao extends Object implements Cloneable {
     double dur = new Double(duracao);
     return dur;
   }
+
   public double getValorTotal() {
 	double dur = new Double(valorTotal);
 	return dur;
-}
+  }
 
   public void setDataLig(GregorianCalendar data) {
     this.dataLig = data;

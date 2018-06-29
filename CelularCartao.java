@@ -22,15 +22,16 @@ public class CelularCartao extends Celular {
 	@Override
 	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws LigacaoInvalidaException {
 		double custo = this.plano.getValorMin() * duracao;
-		if (this.creditos < custo)
+		if (this.creditos < custo) {
 			throw new LigacaoInvalidaException("Crédito insufuciente");
+		}
 		this.creditos -= custo;
 		GregorianCalendar hoje = new GregorianCalendar();
-		if(this.validade.compareTo(hoje) < 0)
+		if(this.validade.compareTo(hoje) < 0) {
 			throw new LigacaoInvalidaException("Créditos vencidos");
+		}
 		Ligacao nova = new Ligacao(data, duracao,duracao*this.plano.getValorMin());
 		return nova;
-		// TODO Auto-generated method stub
 	}
 
 	public double getCreditos() {
@@ -49,26 +50,21 @@ public class CelularCartao extends Celular {
 
 	@Override
 	public double getConta() throws CelularInvalidoException {
-		// TODO Auto-generated method stub
 		throw new CelularInvalidoException("Celular é do tipo Cartão");
 	}
 
 	@Override
 	public int getVencimento() throws CelularInvalidoException {
-		// TODO Auto-generated method stub
 		throw new CelularInvalidoException("Celular é do tipo Cartão");
 	}
 
 	@Override
 	public double deletavel() {
-		// TODO Auto-generated method stub
 		return getCreditos();
 	}
 
 	@Override
 	public char getTipo() {
-		// TODO Auto-generated method stub
 		return 'C';
 	}
-
 }
