@@ -25,12 +25,12 @@ public class Operadora extends Object implements Cloneable {
   }
 
   public void addCliente(String nomeCliente, String documento, String endereco) {
-	Cliente novo = new Cliente(nomeCliente, documento, endereco);
+	  Cliente novo = new Cliente(nomeCliente, documento, endereco);
     this.clientes.add(novo);
   }
 
   public void addPlano(String nome, double valor) {
-	Plano novo = new Plano(nome, valor);
+	  Plano novo = new Plano(nome, valor);
     this.planos.add(novo);
   }
 
@@ -127,18 +127,18 @@ public class Operadora extends Object implements Cloneable {
     return (ArrayList<Plano>) this.planos.clone();
   }
 
-  public ArrayList<Celular> checkValidadeVencimento() {
+  public ArrayList<Celular> checkValidadeVencimento() throws CelularInvalidoException{
     GregorianCalendar atual = new GregorianCalendar();
     GregorianCalendar vencimento = new GregorianCalendar();
     ArrayList<Celular> listaRetorno = new ArrayList<Celular>();
     for(int i = 0; i < this.celulares.size() ; i++) {
-      if(this.celulares.get(i).getPlano() == 'A') {
+      if(this.celulares.get(i).getTipo() == 'A') {
         vencimento.set(Calendar.DAY_OF_MONTH, this.celulares.get(i).getVencimento());
         if(vencimento.equals(atual)) {
           listaRetorno.add(this.celulares.get(i));
         }
       }
-      else if(this.celulares.get(i).getPlano() == 'C') {
+      else if(this.celulares.get(i).getTipo() == 'C') {
         if(this.celulares.get(i).getValidade().equals(atual)) {
           listaRetorno.add(this.celulares.get(i));
         }

@@ -28,8 +28,8 @@ public class Interface {
 		notificaUsuario(); // Último método da classe, só copiei um seu e mudei onde precisava
 		System.out.println("\n Pressione a tecla 'Enter' para continuar");
 		scanner.nextLine();
-		Runtime.exec("clear"); // Linux
-		Runtime.exec("cls"); // Windows
+		// Runtime.exec("clear"); // Linux
+		// Runtime.exec("cls"); // Windows
 		// Fim (apaga esses comentários depois de conferir)
 
 		do {
@@ -70,7 +70,7 @@ public class Interface {
 		  else if (opcao == 8) {
 			  System.out.println("Insira o numero do celular deseja deletar");
 			  String numero = scanner.nextLine();
-			  deleteConta(numero);
+			  deleteCelular(numero);
 		  }
 		  else if (opcao == 9) {
 			  showClientes();
@@ -183,14 +183,14 @@ public class Interface {
 		}
 	}
 
-	private static void deleteConta(String numero) {
+	private static void deleteCelular(String numero) {
 		try {
 			int sucesso = Interface.op.deleteCelular(numero);
 			if (sucesso == 1 ) {
-				System.out.println("Conta deletada com sucesso");
+				System.out.println("Celular deletado com sucesso");
 			}
 			else if (sucesso == 0) {
-				System.out.println("Cliente  possui conta");
+				System.out.println("Celular possui pendências");
 			}
 		} catch (NotInListException | CelularInvalidoException e) {
 			e.printStackTrace();
@@ -235,10 +235,10 @@ public class Interface {
 		}
 		else if (op == 'N' || op == 'n') {
 			newCliente();
-			ArrayList<operadora.Cliente> clientes = Interface.op.getClientes();
+			ArrayList<Cliente> clientes = Interface.op.getClientes();
 			indice = clientes.size();
 			if(indice != 0) {
-				indice = indice -1;
+				indice = indice - 1;
 			}
 			Interface.op.addCelular(clientes.get(indice).getNomeCliente(),tipo,Interface.op.getPlanos().get(indicePlano),venc);
 		}
@@ -359,7 +359,7 @@ public class Interface {
 		}
 	}
 
-	public static void lerDados() {
+	private static void gravarDados() {
 		try {
 			op.gravarClientes();
 			op.gravarPlanos();
@@ -370,7 +370,7 @@ public class Interface {
 		}
 	}
 
-	public static void gravarDados() {
+	private static void lerDados() {
 		try {
 			op.lerClientes();
 			op.lerPlanos();
