@@ -147,12 +147,13 @@ public class Operadora extends Object implements Cloneable {
     for(int i = 0; i < this.celulares.size() ; i++) {
       if(this.celulares.get(i).getTipo() == 'A') {
         vencimento.set(Calendar.DAY_OF_MONTH, this.celulares.get(i).getVencimento());
-        if(vencimento.equals(atual)) {
+        if((vencimento.get(Calendar.DAY_OF_MONTH)==atual.get(Calendar.DAY_OF_MONTH))&&(vencimento.get(Calendar.MONTH)==atual.get(Calendar.MONTH))&&(vencimento.get(Calendar.YEAR)==atual.get(Calendar.YEAR))) {
           listaRetorno.add(this.celulares.get(i));
         }
       }
       else if(this.celulares.get(i).getTipo() == 'C') {
-        if(this.celulares.get(i).getValidade().equals(atual)) {
+    	GregorianCalendar validade = this.celulares.get(i).getValidade();
+        if((validade.get(Calendar.DAY_OF_MONTH)==atual.get(Calendar.DAY_OF_MONTH))&&(validade.get(Calendar.MONTH)==atual.get(Calendar.MONTH))&&(validade.get(Calendar.YEAR)==atual.get(Calendar.YEAR))) {
           listaRetorno.add(this.celulares.get(i));
         }
       }
@@ -212,7 +213,7 @@ public class Operadora extends Object implements Cloneable {
 			  escreverArq.write("Saldo: "+df.format(this.celulares.get(j).getCreditos()));
 			  escreverArq.write("\n");
 			  GregorianCalendar validade = this.celulares.get(j).getValidade();
-			  escreverArq.write("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + validade.get(Calendar.MONTH) + "/" + validade.get(Calendar.YEAR));
+			  escreverArq.write("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + (validade.get(Calendar.MONTH)+1) + "/" + validade.get(Calendar.YEAR));
 			  escreverArq.write("\n");
 		  }
 		  else if (tipo == 'A') {
@@ -239,7 +240,6 @@ public class Operadora extends Object implements Cloneable {
 		  escreverArq.write("\n");
 		  
 	  }
-	  escreverArq.write("Fim");
 	  escreverArq.close();
 	  
   }
@@ -300,7 +300,7 @@ public class Operadora extends Object implements Cloneable {
 	  lerArq.close();
   }
 
-  public void lerCelulares() throws IOException, CelularInvalidoException, NotInListException, LigacaoInvalidaException  {
+  public void lerCelulares() throws IOException, CelularInvalidoException, NotInListException, LigacaoInvalidaException{
 	  String nome, linha,numero, titular, aux;
 	  GregorianCalendar validade = new GregorianCalendar();
 	  double saldo= 0,duracao;
@@ -308,71 +308,68 @@ public class Operadora extends Object implements Cloneable {
 	  Plano plano;
 	  int x = 0;
 	  int vencimento = 0, indice,dia,mes,ano;
-	  String[] data,val;
+	  String[] data,val, teste;
 	  
 	  FileReader arquivo = new FileReader("Celulares.txt");
 	  BufferedReader lerArq = new BufferedReader(arquivo);
 	  linha = lerArq.readLine();
-		  if (linha.equals("Celulares")) {
+	  if (linha.equals("Celulares")) {
+		  linha = lerArq.readLine();
+		  for(linha = lerArq.readLine(); linha!=null; linha = lerArq.readLine()) {
+			  titular = linha.substring(9);
+			  
 			  linha = lerArq.readLine();
-			 for(linha = lerArq.readLine(); linha==null; linha = lerArq.readLine()) {
-				  
-				  titular = linha.substring(9); 
+			  numero = linha.substring(8);
+			  
+			  linha = lerArq.readLine();
+			  tipo = linha.charAt(6);
+			  
+			  if(tipo == 'C') {
+				  linha = lerArq.readLine();
+				  saldo = Double.parseDouble(linha.substring(10));
 				  
 				  linha = lerArq.readLine();
-				  numero = linha.substring(8);
-	
-				  linha = lerArq.readLine();
-				  tipo = linha.substring(6).charAt(0);
-				  
-				  if (tipo == 'C') {
-					  linha = lerArq.readLine();
-					  saldo = Double.parseDouble(linha.substring(10));
-					  
-					  linha = lerArq.readLine();
-					  val = linha.substring(10).split("/");
-					  dia = Integer.parseInt(val[0]);
-					  mes = Integer.parseInt(val[1]) - 1;
-					  ano = Integer.parseInt(val[2]);
-					  validade = new GregorianCalendar(ano,mes,dia);
-				  }
-				  
-				  else if (tipo == 'A') {
-					  linha = lerArq.readLine();
-					  vencimento = Integer.parseInt(linha.substring(19));
-				  }
-				  
-				  linha = lerArq.readLine();
-				  nome = linha.substring(15); 
-				  indice = this.findPlano(nome);
-				  plano = this.planos.get(indice);
-				  this.addCelular(titular, tipo, plano, vencimento,validade,saldo,numero);
-				  
-				  if (((linha = lerArq.readLine()).equals(new String("Ligaçoes")))) {
-					  lerArq.readLine();
-						 while(!((linha = lerArq.readLine()).equals(new String("Fim das ligações")))) {
-							 
-							  data = linha.substring(17).split("/");
-							  dia = Integer.parseInt(data[0]);
-							  mes = Integer.parseInt(data[1]);
-							  mes = mes - 1; // Na classe GregorianCalendar o meses vão de 0 a 11
-							  ano = Integer.parseInt(data[2]);
-							  
-							  linha = lerArq.readLine();
-							  duracao = Double.parseDouble(linha.substring(9));
-							  GregorianCalendar dataLig = new GregorianCalendar(ano,mes,dia);
-							  
-							  this.newLigacao(numero, dataLig, duracao);
-							  
-							  
-						  }
-					  }
-				  
+				  val = linha.substring(10).split("/");
+				  dia = Integer.parseInt(val[0]);
+				  mes = Integer.parseInt(val[1]) - 1;
+				  ano = Integer.parseInt(val[2]);
+				  validade = new GregorianCalendar(ano,mes,dia);
 			  }
+			  else if (tipo == 'A') {
+				  linha = lerArq.readLine();
+				  vencimento = Integer.parseInt(linha.substring(19));
+			  }
+			  
+			  linha = lerArq.readLine();
+			  nome = linha.substring(15); 
+			  indice = this.findPlano(nome);
+			  plano = this.planos.get(indice);
+			  addCelular(titular, tipo, plano, vencimento,validade,saldo,numero);
+			  if (((linha = lerArq.readLine()).equals("Ligações"))) {
+				  lerArq.readLine();
+					 while(!((linha = lerArq.readLine()).equals(new String("Fim das Ligações")))) {
+						 
+						  data = linha.substring(17).split("/");
+						  dia = Integer.parseInt(data[0]);
+						  mes = Integer.parseInt(data[1]);
+						  mes = mes - 1; // Na classe GregorianCalendar o meses vão de 0 a 11
+						  ano = Integer.parseInt(data[2]);
+						  
+						  linha = lerArq.readLine();
+						  duracao = Double.parseDouble(linha.substring(9));
+						  GregorianCalendar dataLig = new GregorianCalendar(ano,mes,dia);
+						  
+						  this.newLigacao(numero, dataLig, duracao);
+						  
+						  
+					  }
+			  }
+			  
 		  }
+	  }
 	  lerArq.close();
   }
-
+  
   public void lerPlanos() throws IOException {
 	  String nome, valor,linha;
 	  double valorpm;

@@ -136,7 +136,6 @@ public class Interface {
 			ArrayList<Celular> lista = Interface.op.getCelulares();
 			for(int i = 0; i < lista.size(); i++) {
 				System.out.println("Número: " + lista.get(i).getNumero());
-				System.out.print("\n");
 				Cliente c;
 				c = lista.get(i).getCliente();
 				System.out.println("Nome do Cliente: " + c.getNomeCliente());
@@ -156,6 +155,7 @@ public class Interface {
 				}else {
 					System.out.println("Vencimento: " + lista.get(i).getVencimento());
 				}
+				System.out.print("\n");
 			}
 		} catch (CloneNotSupportedException | CelularInvalidoException e) {
 			e.printStackTrace();
@@ -332,11 +332,10 @@ public class Interface {
 		try {
 			DecimalFormat df = new DecimalFormat();
 			df.applyPattern("R$ #,##0.00");
-			System.out.println("Lista de celulares: ");
+			System.out.println("Celulares com conta ou créditos vencidos: ");
 			ArrayList<Celular> lista = Interface.op.checkValidadeVencimento();
 			for(int i = 0; i < lista.size(); i++) {
 				System.out.println("Número: " + lista.get(i).getNumero());
-				System.out.print("\n");
 				Cliente c;
 				c = lista.get(i).getCliente();
 				System.out.println("Nome do Cliente: " + c.getNomeCliente());
@@ -351,10 +350,11 @@ public class Interface {
 				if(lista.get(i).getTipo() == 'C') {
 					System.out.println("Créditos: " + df.format(lista.get(i).getCreditos()));
 					GregorianCalendar validade = lista.get(i).getValidade();
-					System.out.println("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + validade.get(Calendar.MONTH) + "/" + validade.get(Calendar.YEAR));
+					System.out.println("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + (validade.get(Calendar.MONTH)+1) + "/" + validade.get(Calendar.YEAR));
 				}else {
 					System.out.println("Vencimento: " + lista.get(i).getVencimento());
 				}
+				System.out.print("\n");
 			}
 		} catch (CloneNotSupportedException | CelularInvalidoException e) {
 			e.printStackTrace();
