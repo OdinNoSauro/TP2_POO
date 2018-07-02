@@ -17,6 +17,17 @@ public class CelularAss extends Celular {
 		this.proxNum++;
 	}
 
+	public CelularAss(Plano plano, Cliente cliente, int vencimento, String numero) {
+		this.vencimento = vencimento;
+		this.plano = plano;
+		this.cliente = cliente;
+		this.numero = numero;
+		int proximo = Integer.parseInt(numero)+1;
+		if(proximo>Celular.proxNum)
+			Celular.proxNum = proximo;
+		this.ligacoes = new ArrayList<Ligacao>();
+	}
+
 	@Override
 	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) {
 		Ligacao nova = new Ligacao(data, duracao,duracao*this.plano.getValorMin());

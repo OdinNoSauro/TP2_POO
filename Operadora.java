@@ -3,12 +3,19 @@ package operadora;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 
 public class Operadora extends Object implements Cloneable {
@@ -66,6 +73,12 @@ public class Operadora extends Object implements Cloneable {
     Celular novo = this.clientes.get(indiceCliente).newCelular(tipo,plano, vencimento);
     this.celulares.add(novo);
   }
+  
+  public void addCelular(String nomeCliente, char tipo, Plano plano, int vencimento, GregorianCalendar validade, double saldo, String numero) throws CelularInvalidoException, NotInListException {
+	    int indiceCliente = findCliente(nomeCliente);
+	    Celular novo = this.clientes.get(indiceCliente).newCelular(tipo,plano, vencimento,validade,saldo,numero);
+	    this.celulares.add(novo);
+	  }
 
   public int deleteCelular(String numero) throws NotInListException, CelularInvalidoException {
 	  int indice = findCelular(numero);
@@ -144,54 +157,249 @@ public class Operadora extends Object implements Cloneable {
         }
       }
     }
-    return listaRetorno.clone();
+    return (ArrayList<Celular>) listaRetorno.clone();
   }
 
-  public void gravarClientes() throws CloneNotSupportedException, FileNotFoundException, IOException {
-  	FileOutputStream out = new FileOutputStream("Clientes.txt");
-  	ObjectOutputStream objOut = new ObjectOutputStream(out);
-  	objOut.writeObject(this.clientes);
-  	objOut.close();
+  public void gravarClientes() throws IOException, CelularInvalidoException, CloneNotSupportedException{
+	  FileWriter arquivo = new FileWriter("Cliente.txt");
+	  BufferedWriter escreverArq = new BufferedWriter(arquivo);
+
+		  escreverArq.write("Clientes");
+		  escreverArq.write("\n");
+		  escreverArq.write("\n");
+
+		  for(int i = 0; i < this.getClientes().size(); i++) {
+			  escreverArq.write("Cliente: "+this.getClientes().get(i).getNomeCliente());
+			  escreverArq.write("\n");
+
+			  escreverArq.write("CPF/CNPJ: "+this.getClientes().get(i).getdocumento());
+			  escreverArq.write("\n");
+
+			  escreverArq.write("Endereço: "+this.getClientes().get(i).getEndereco());
+			  escreverArq.write("\n");
+			  
+			  escreverArq.write("\n");
+
+		  }
+		  escreverArq.write("Fim");
+		  escreverArq.close();
+  }
+  
+  public void gravarCelulares() throws IOException, CelularInvalidoException, CloneNotSupportedException {
+	  char tipo;
+	  Locale.setDefault(new Locale("en","US"));
+	  DecimalFormat df = new DecimalFormat();
+	  df.applyPattern("R$ 0.00");
+	  FileWriter arquivo = new FileWriter("Celulares.txt");
+	  BufferedWriter escreverArq = new BufferedWriter(arquivo);
+	  escreverArq.write("Celulares");
+	  escreverArq.write("\n");
+	  escreverArq.write("\n");
+	  
+	  for(int j = 0; j < this.celulares.size(); j++) {
+		  
+		  escreverArq.write("Titular: "+this.celulares.get(j).getCliente().getNomeCliente());
+		  escreverArq.write("\n"); 
+		  
+		  escreverArq.write("Número: "+this.celulares.get(j).getNumero());
+		  escreverArq.write("\n"); 
+		  
+		  tipo = this.celulares.get(j).getTipo();
+		  escreverArq.write("Tipo: "+tipo);
+		  escreverArq.write("\n");
+		  
+		  if(tipo == 'C') {
+			  escreverArq.write("Saldo: "+df.format(this.celulares.get(j).getCreditos()));
+			  escreverArq.write("\n");
+			  GregorianCalendar validade = this.celulares.get(j).getValidade();
+			  escreverArq.write("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + validade.get(Calendar.MONTH) + "/" + validade.get(Calendar.YEAR));
+			  escreverArq.write("\n");
+		  }
+		  else if (tipo == 'A') {
+			  escreverArq.write("Dia de Vencimento: "+this.celulares.get(j).getVencimento());
+			  escreverArq.write("\n");
+		  }
+		  escreverArq.write("Nome do plano: "+this.celulares.get(j).getPlano().getNome());
+		  escreverArq.write("\n");
+		  
+		  escreverArq.write("Ligações");
+		  escreverArq.write("\n");
+		  escreverArq.write("\n");
+		  
+		  for (int i = 0; i<celulares.get(j).getLigacoes().size();i++) {
+			  GregorianCalendar data = this.celulares.get(j).getLigacoes().get(i).getDataLig();
+			  escreverArq.write("Data da ligação: " + data.get(Calendar.DAY_OF_MONTH) + "/" + (data.get(Calendar.MONTH)+1) + "/" + data.get(Calendar.YEAR));
+			  escreverArq.write("\n");
+			  
+			  escreverArq.write("Duração: "+this.celulares.get(j).getLigacoes().get(i).getDuracao());
+			  escreverArq.write("\n");
+		  }
+		  
+		  escreverArq.write("Fim das Ligações");
+		  escreverArq.write("\n");
+		  
+	  }
+	  escreverArq.write("Fim");
+	  escreverArq.close();
+	  
   }
 
-  public void gravarCelulares() throws CloneNotSupportedException, FileNotFoundException, IOException {
-    FileOutputStream out = new FileOutputStream("Celulares.txt");
-    ObjectOutputStream objOut = new ObjectOutputStream(out);
-    objOut.writeObject(this.celulares);
-    objOut.close();
+  
+  public void gravarPlanos() throws IOException {
+	  Locale.setDefault(new Locale("en","US"));
+	  DecimalFormat df = new DecimalFormat();
+	  df.applyPattern("R$ 0.00");
+	  FileWriter arquivo = new FileWriter("Planos.txt");
+	  BufferedWriter escreverArq = new BufferedWriter(arquivo);
+
+		  escreverArq.write("Planos");
+		  escreverArq.write("\n");
+		  escreverArq.write("\n");
+
+		  for(int i = 0; i < this.getPlanos().size(); i++) {
+			  escreverArq.write("Nome: "+this.getPlanos().get(i).getNome());
+			  escreverArq.write("\n");
+
+			  escreverArq.write("Valor por minuto: "+df.format(this.getPlanos().get(i).getValorMin()));
+			  escreverArq.write("\n");
+			  
+			  escreverArq.write("\n");
+
+		  }
+		  escreverArq.write("Fim");
+		  escreverArq.close();
   }
 
-  public void gravarPlanos() throws CloneNotSupportedException, FileNotFoundException, IOException {
-    FileOutputStream out = new FileOutputStream("Planos.txt");
-    ObjectOutputStream objOut = new ObjectOutputStream(out);
-    objOut.writeObject(this.planos);
-    objOut.close();
+  public void lerClientes() throws IOException {
+	  String nome, linha,documento,endereco;
+	  
+	  FileReader arquivo = new FileReader("Cliente.txt");
+	  BufferedReader lerArq = new BufferedReader(arquivo);
+	  linha = lerArq.readLine();
+	  if (lerArq.readLine()!=null) {
+		  if (linha.equals("Clientes")) {
+	
+			  while (!((linha = lerArq.readLine()).equals(new String("Fim")))) {
+				  
+				  nome = linha.substring(9);
+				  
+				  linha = lerArq.readLine();
+				  documento = linha.substring(10);
+	
+				  linha = lerArq.readLine();
+				  endereco = linha.substring(10);
+	
+				  this.addCliente(nome, documento, endereco);
+	
+				  linha = lerArq.readLine();
+	
+			  }
+		  }
+		  
+	  }
+	  lerArq.close();
   }
 
-  public void lerClientes() throws IOException, FileNotFoundException, ClassNotFoundException {
-  	if(new File("Clientes.txt").canRead() == true) {
-			FileInputStream inC = new FileInputStream("Clientes.txt");
-			ObjectInputStream objInc = new ObjectInputStream(inC);
-			this.clientes = (ArrayList<Cliente>) objInc.readObject();
-			objInc.close();
-  	}
+  public void lerCelulares() throws IOException, CelularInvalidoException, NotInListException, LigacaoInvalidaException  {
+	  String nome, linha,numero, titular, aux;
+	  GregorianCalendar validade = new GregorianCalendar();
+	  double saldo= 0,duracao;
+	  char tipo;
+	  Plano plano;
+	  int x = 0;
+	  int vencimento = 0, indice,dia,mes,ano;
+	  String[] data,val;
+	  
+	  FileReader arquivo = new FileReader("Celulares.txt");
+	  BufferedReader lerArq = new BufferedReader(arquivo);
+	  linha = lerArq.readLine();
+		  if (linha.equals("Celulares")) {
+			  linha = lerArq.readLine();
+			 for(linha = lerArq.readLine(); linha==null; linha = lerArq.readLine()) {
+				  
+				  titular = linha.substring(9); 
+				  
+				  linha = lerArq.readLine();
+				  numero = linha.substring(8);
+	
+				  linha = lerArq.readLine();
+				  tipo = linha.substring(6).charAt(0);
+				  
+				  if (tipo == 'C') {
+					  linha = lerArq.readLine();
+					  saldo = Double.parseDouble(linha.substring(10));
+					  
+					  linha = lerArq.readLine();
+					  val = linha.substring(10).split("/");
+					  dia = Integer.parseInt(val[0]);
+					  mes = Integer.parseInt(val[1]) - 1;
+					  ano = Integer.parseInt(val[2]);
+					  validade = new GregorianCalendar(ano,mes,dia);
+				  }
+				  
+				  else if (tipo == 'A') {
+					  linha = lerArq.readLine();
+					  vencimento = Integer.parseInt(linha.substring(19));
+				  }
+				  
+				  linha = lerArq.readLine();
+				  nome = linha.substring(15); 
+				  indice = this.findPlano(nome);
+				  plano = this.planos.get(indice);
+				  this.addCelular(titular, tipo, plano, vencimento,validade,saldo,numero);
+				  
+				  if (((linha = lerArq.readLine()).equals(new String("Ligaçoes")))) {
+					  lerArq.readLine();
+						 while(!((linha = lerArq.readLine()).equals(new String("Fim das ligações")))) {
+							 
+							  data = linha.substring(17).split("/");
+							  dia = Integer.parseInt(data[0]);
+							  mes = Integer.parseInt(data[1]);
+							  mes = mes - 1; // Na classe GregorianCalendar o meses vão de 0 a 11
+							  ano = Integer.parseInt(data[2]);
+							  
+							  linha = lerArq.readLine();
+							  duracao = Double.parseDouble(linha.substring(9));
+							  GregorianCalendar dataLig = new GregorianCalendar(ano,mes,dia);
+							  
+							  this.newLigacao(numero, dataLig, duracao);
+							  
+							  
+						  }
+					  }
+				  
+			  }
+		  }
+	  lerArq.close();
   }
 
-  public void lerCelulares() throws IOException, FileNotFoundException, ClassNotFoundException {
-    if(new File("Celulares.txt").canRead() == true) {
-      FileInputStream inC = new FileInputStream("Celulares.txt");
-      ObjectInputStream objInc = new ObjectInputStream(inC);
-      this.celulares = (ArrayList<Cliente>) objInc.readObject();
-      objInc.close();
-    }
-  }
-
-  public void lerPlanos() throws IOException, FileNotFoundException, ClassNotFoundException {
-    if(new File("Planos.txt").canRead() == true) {
-      FileInputStream inC = new FileInputStream("Planos.txt");
-      ObjectInputStream objInc = new ObjectInputStream(inC);
-      this.planos = (ArrayList<Cliente>) objInc.readObject();
-      objInc.close();
-    }
+  public void lerPlanos() throws IOException {
+	  String nome, valor,linha;
+	  double valorpm;
+	  FileReader arquivo = new FileReader("Planos.txt");
+	  BufferedReader lerArq = new BufferedReader(arquivo);
+	  linha = lerArq.readLine();
+	  if (lerArq.readLine()!=null) {
+		  if (linha.equals("Planos")) {
+	
+			  while (!((linha = lerArq.readLine()).equals(new String("Fim")))) {
+				  
+				  nome = linha.substring(6);
+				  
+				  linha = lerArq.readLine();
+				  valor = linha.substring(20);
+				  
+				  valorpm = Double.parseDouble(valor);
+				  
+				  linha = lerArq.readLine();
+	
+				  this.addPlano(nome, valorpm);
+	
+	
+			  }
+		  }
+		  
+	  }
+	  lerArq.close();
   }
 }

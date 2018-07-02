@@ -100,7 +100,8 @@ public class Interface {
 		for(int i = 0; i < lista.size(); i++) {
 			GregorianCalendar data = lista.get(i).getDataLig();
 			System.out.println("Duração: " + lista.get(i).getDuracao());
-			System.out.println("Data: " + data.get(Calendar.DAY_OF_MONTH) + "/" + data.get(Calendar.MONTH) + "/" + data.get(Calendar.YEAR));
+			int mes = data.get(Calendar.MONTH)+1;
+			System.out.println("Data: " + data.get(Calendar.DAY_OF_MONTH) + "/" + mes + "/" + data.get(Calendar.YEAR));
 			System.out.print("\n");
 		}
 	}
@@ -150,7 +151,8 @@ public class Interface {
 				if(lista.get(i).getTipo() == 'C') {
 					System.out.println("Créditos: " + df.format(lista.get(i).getCreditos()));
 					GregorianCalendar validade = lista.get(i).getValidade();
-					System.out.println("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + validade.get(Calendar.MONTH) + "/" + validade.get(Calendar.YEAR));
+					int mes = validade.get(Calendar.MONTH) +1;
+					System.out.println("Validade: " + validade.get(Calendar.DAY_OF_MONTH) + "/" + mes + "/" + validade.get(Calendar.YEAR));
 				}else {
 					System.out.println("Vencimento: " + lista.get(i).getVencimento());
 				}
@@ -362,10 +364,10 @@ public class Interface {
 	private static void gravarDados() {
 		try {
 			op.gravarClientes();
-			op.gravarPlanos();
 			op.gravarCelulares();
+			op.gravarPlanos();
 		}
-		catch(CloneNotSupportedException | FileNotFoundException | IOException e) {
+		catch(CloneNotSupportedException | IOException | CelularInvalidoException e) {
 			e.printStackTrace();
 		}
 	}
@@ -376,7 +378,7 @@ public class Interface {
 			op.lerPlanos();
 			op.lerCelulares();
 		}
-		catch(IOException | FileNotFoundException | ClassNotFoundException e) {
+		catch(IOException | CelularInvalidoException | NotInListException | LigacaoInvalidaException e) {
 			e.printStackTrace();
 		}
 	}

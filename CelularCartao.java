@@ -18,6 +18,18 @@ public class CelularCartao extends Celular {
 		this.ligacoes = new ArrayList<Ligacao>();
 		this.validade = new GregorianCalendar();
 	}
+	
+	public CelularCartao(Cliente client, Plano plan, GregorianCalendar validade, double saldo, String numero) {
+		this.plano = plan;
+		this.cliente = client;
+		this.numero = numero;
+		int proximo = Integer.parseInt(numero)+1;
+		if(proximo>Celular.proxNum)
+			Celular.proxNum = proximo;
+		this.creditos = saldo;
+		this.ligacoes = new ArrayList<Ligacao>();
+		this.validade = validade;
+	}
 
 	@Override
 	public Ligacao realizarLigacao(GregorianCalendar data, double duracao) throws LigacaoInvalidaException {

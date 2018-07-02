@@ -1,6 +1,7 @@
 package operadora;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class Cliente extends Object implements Cloneable {
   private String nomeCliente;
@@ -63,4 +64,19 @@ public class Cliente extends Object implements Cloneable {
     }
     throw new CelularInvalidoException("Tipo invalido");
   }
+  
+  public Celular newCelular(char tipo, Plano plano, int vencimento, GregorianCalendar validade, double saldo, String numero) throws CelularInvalidoException {
+	    if (tipo == 'C' || tipo == 'c') {
+	    	Celular novo = new CelularCartao(this,plano,validade,saldo,numero);
+	    	this.celulares.add(novo);
+	    	return novo;
+	    }
+	    else if(tipo == 'A' || tipo == 'a') {
+	    	Celular novo = new CelularAss(plano,this,vencimento, numero);
+	    	this.celulares.add(novo);
+	    	return novo;
+	    }
+	    throw new CelularInvalidoException("Tipo invalido");
+	  }
+  
 }
