@@ -24,7 +24,7 @@ public class Cliente extends Object implements Cloneable {
 	  return copia;
   }
 
-  public String getdocumento() {
+  public String getDocumento() {
 	  String copia = this.documento;
 	  return copia;
   }
@@ -64,7 +64,7 @@ public class Cliente extends Object implements Cloneable {
     }
     throw new CelularInvalidoException("Tipo invalido");
   }
-  
+
   public Celular newCelular(char tipo, Plano plano, int vencimento, GregorianCalendar validade, double saldo, String numero) throws CelularInvalidoException {
 	    if (tipo == 'C' || tipo == 'c') {
 	    	Celular novo = new CelularCartao(this,plano,validade,saldo,numero);
@@ -78,5 +78,5 @@ public class Cliente extends Object implements Cloneable {
 	    }
 	    throw new CelularInvalidoException("Tipo invalido");
 	  }
-  
+
 }

@@ -139,7 +139,7 @@ public class Interface {
 				Cliente c;
 				c = lista.get(i).getCliente();
 				System.out.println("Nome do Cliente: " + c.getNomeCliente());
-				System.out.println("Documento: " + c.getdocumento());
+				System.out.println("Documento: " + c.getDocumento());
 				System.out.println("Endereço: " + c.getEndereco());
 				System.out.print("\n");
 				Plano p = lista.get(i).getPlano();
@@ -179,7 +179,7 @@ public class Interface {
 		ArrayList<Cliente> lista = Interface.op.getClientes();
 		for(int i = 0; i < lista.size(); i++) {
 			System.out.println("Nome do Cliente: " + lista.get(i).getNomeCliente());
-			System.out.println("Documento: " + lista.get(i).getdocumento());
+			System.out.println("Documento: " + lista.get(i).getDocumento());
 			System.out.println("Endereço: " + lista.get(i).getEndereco());
 			System.out.print("\n");
 		}
@@ -339,7 +339,7 @@ public class Interface {
 				Cliente c;
 				c = lista.get(i).getCliente();
 				System.out.println("Nome do Cliente: " + c.getNomeCliente());
-				System.out.println("Documento: " + c.getdocumento());
+				System.out.println("Documento: " + c.getDocumento());
 				System.out.println("Endereço: " + c.getEndereco());
 				System.out.print("\n");
 				Plano p = lista.get(i).getPlano();
